@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Hazards
   layers:
   - Default
   - TransparentFX
@@ -14,10 +15,10 @@ TagManager:
   - Platforms
   - Background
   - Player
-  - 
-  - 
-  - 
-  - 
+  - Mushroom
+  - Hazards
+  - Collectables
+  - Axe
   - 
   - 
   - 
@@ -47,6 +48,18 @@ TagManager:
   - name: Platforms
     uniqueID: 1367392751
     locked: 0
+  - name: Mushroom
+    uniqueID: 4261628363
+    locked: 0
+  - name: Collectables
+    uniqueID: 3075526087
+    locked: 0
+  - name: Axe
+    uniqueID: 3901092087
+    locked: 0
   - name: Player
     uniqueID: 1027510789
+    locked: 0
+  - name: Hazards
+    uniqueID: 1178489521
     locked: 0

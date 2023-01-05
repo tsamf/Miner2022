@@ -7,20 +7,27 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] float jumpSpeed = 10f;
     [SerializeField] float runSpeed = 10f;
+    [SerializeField] float deathTimer = 1f;
 
+    [Header("Sounds")]
+    [SerializeField] AudioClip deathSFX;
+    
     private Rigidbody2D myRigidbody2D;
     private Vector2 moveInput;
     private BoxCollider2D myBoxCollider2D;
     private Animator myAnimator;
+    private GameManager gameManager;
+     
 
-    void Awake()
+    private void Awake()
     {
         myRigidbody2D = GetComponent<Rigidbody2D>();
         myBoxCollider2D = GetComponent<BoxCollider2D>();
         myAnimator = GetComponent<Animator>();
+        gameManager = FindObjectOfType<GameManager>();
     }
 
-    void Update()
+    private void Update()
     {
         myRigidbody2D.velocity = new Vector2(moveInput.x * runSpeed, myRigidbody2D.velocity.y);
 
@@ -34,12 +41,12 @@ public class PlayerMovement : MonoBehaviour
         myAnimator.SetBool("isRunning", playerHasHorizontalSpeed);
     }
 
-    void OnMove(InputValue value)
+    private void OnMove(InputValue value)
     {
         moveInput = value.Get<Vector2>();
     }
 
-    void OnJump(InputValue value)
+    private void OnJump(InputValue value)
     {
         if (!myBoxCollider2D.IsTouchingLayers(LayerMask.GetMask("Platforms"))) { return; }
 
@@ -50,9 +57,23 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         myAnimator.SetBool("isJumping", false);
     }
 
+    private void OnCollisionEnter2D(Collision2D other) {
+        if(other.gameObject.tag == "Hazards")
+        {
+           StartCoroutine(Die());
+        }    
+    }
+
+    private IEnumerator Die()
+    {
+        myAnimator.SetBool("isDead", true); 
+        AudioSource.PlayClipAtPoint(deathSFX, Camera.main.transform.position);
+        yield return new  WaitForSeconds(deathTimer);
+        gameManager.reloadScene();
+    } 
 }
