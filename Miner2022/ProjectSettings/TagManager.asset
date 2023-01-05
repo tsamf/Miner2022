@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Hazards
+  - Enemy
+  - Platforms
+  - PickAxe
   layers:
   - Default
   - TransparentFX
@@ -18,8 +21,8 @@ TagManager:
   - Mushroom
   - Hazards
   - Collectables
-  - Axe
-  - 
+  - PickAxe
+  - Enemy
   - 
   - 
   - 
@@ -45,6 +48,9 @@ TagManager:
   - name: Background
     uniqueID: 3548690883
     locked: 0
+  - name: PickAxe
+    uniqueID: 3901092087
+    locked: 0
   - name: Platforms
     uniqueID: 1367392751
     locked: 0
@@ -54,11 +60,11 @@ TagManager:
   - name: Collectables
     uniqueID: 3075526087
     locked: 0
-  - name: Axe
-    uniqueID: 3901092087
-    locked: 0
   - name: Player
     uniqueID: 1027510789
+    locked: 0
+  - name: Enemy
+    uniqueID: 3675515417
     locked: 0
   - name: Hazards
     uniqueID: 1178489521
