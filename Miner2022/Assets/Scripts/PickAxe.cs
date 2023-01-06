@@ -4,15 +4,10 @@ using UnityEngine;
 
 public class PickAxe : MonoBehaviour
 {
-    // Start is called before the first frame update
+    [SerializeField] AudioClip throwSFX;
+
     void Start()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        AudioSource.PlayClipAtPoint(throwSFX, Camera.main.transform.position);
     }
 }

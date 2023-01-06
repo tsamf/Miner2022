@@ -23,7 +23,7 @@ TagManager:
   - Collectables
   - PickAxe
   - Enemy
-  - 
+  - Ladder
   - 
   - 
   - 
@@ -59,6 +59,12 @@ TagManager:
     locked: 0
   - name: Collectables
     uniqueID: 3075526087
+    locked: 0
+  - name: Ladder
+    uniqueID: 2294739227
+    locked: 0
+  - name: Crumbling
+    uniqueID: 2635761193
     locked: 0
   - name: Player
     uniqueID: 1027510789
