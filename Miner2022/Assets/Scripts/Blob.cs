@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class Blob : MonoBehaviour
 {
-    [SerializeField]float movementSpeed = 10f;
+    [SerializeField] float movementSpeed = 10f;
     [SerializeField] int points = 100;
 
-    private Rigidbody2D myRigidbody2D; 
+    private Rigidbody2D myRigidbody2D;
     private GameManager gameManager;
     private SoundManager soundManager;
+    private bool isDying = false;
 
     void Awake()
     {
@@ -24,25 +25,31 @@ public class Blob : MonoBehaviour
         myRigidbody2D.velocity = new Vector2(movementSpeed, 0f);
     }
 
-    private void OnTriggerEnter2D(Collider2D other) {
-        
-        if(other.tag == "Platforms") {return;}
-        if(other.tag == "PickAxe")
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+
+        if (other.tag == "Platforms") { return; }
+        if (other.tag == "PickAxe")
         {
-            gameManager.AddPointsToScore(points);
-            soundManager.PlayBlobDeathSFX();
-            Destroy(gameObject); 
+            if (!isDying)
+            {   
+                isDying= true;
+                gameManager.AddPointsToScore(points);
+                soundManager.PlayBlobDeathSFX();
+                Destroy(gameObject);
+            }
         }
         else
         {
             movementSpeed = -movementSpeed;
             FlipEnemyFacing();
         }
-        
+
     }
 
-    private void OnTriggerExit2D(Collider2D other) {
-        if(other.tag == "Platforms")
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.tag == "Platforms")
         {
             movementSpeed = -movementSpeed;
             FlipEnemyFacing();
@@ -51,6 +58,6 @@ public class Blob : MonoBehaviour
 
     private void FlipEnemyFacing()
     {
-        transform.localScale = new Vector2(-transform.localScale.x, 1f); 
+        transform.localScale = new Vector2(-transform.localScale.x, 1f);
     }
 }

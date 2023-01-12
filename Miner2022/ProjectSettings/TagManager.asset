@@ -24,7 +24,7 @@ TagManager:
   - PickAxe
   - Enemy
   - Ladder
-  - 
+  - Guide
   - 
   - 
   - 
@@ -68,6 +68,9 @@ TagManager:
     locked: 0
   - name: Crumbling
     uniqueID: 2635761193
+    locked: 0
+  - name: Guide
+    uniqueID: 2188741031
     locked: 0
   - name: Player
     uniqueID: 1027510789

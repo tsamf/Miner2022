@@ -26,7 +26,9 @@ public class PlayerMovement : MonoBehaviour
     private Animator myAnimator;
     private GameManager gameManager;
     private SoundManager soundManager;
+    private Guide guide;
     private bool isDead;
+    private bool isPaused;
     private float myGravityScaleAtStart;
 
     private void Awake()
@@ -38,11 +40,13 @@ public class PlayerMovement : MonoBehaviour
         myAnimator = GetComponent<Animator>();
         gameManager = FindObjectOfType<GameManager>();
         soundManager = FindObjectOfType<SoundManager>();
+        guide = FindObjectOfType<Guide>();
     }
 
     private void Update()
     {
         if(isDead){return;}
+        if(isPaused){return;}
         move();
         flip();
         Climb(); 
@@ -87,12 +91,14 @@ public class PlayerMovement : MonoBehaviour
     private void OnMove(InputValue value)
     {
         if(isDead){return;}
+        if(isPaused){return;}
         moveInput = value.Get<Vector2>();
     }
 
     private void OnJump(InputValue value)
     {
         if(isDead){return;}
+        if(isPaused){return;}
         if (!myBoxCollider2D.IsTouchingLayers(LayerMask.GetMask("Platforms"))) { return; }
 
         if (value.isPressed)
@@ -103,8 +109,24 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void OnInteract(InputValue value)
+    {
+        if(isDead){return;}
+        if(isPaused){return;}
+        if(value.isPressed)
+        {
+            if(myBoxCollider2D.IsTouchingLayers(LayerMask.GetMask("Guide")))
+            {
+                guide.StartDialogue();
+                Pause();
+            }
+        }
+    }
+
     private void OnFire(InputValue value)
     {
+        if(isDead){return;}
+        if(isPaused){return;}
         Transform weapon = Instantiate(weaponPrefab, transform.position, Quaternion.identity);
         Vector2 throwDistance = new Vector2(-transform.localScale.x * (Mathf.Abs(myRigidbody2D.velocity.x)+ throwSpeed.x), myRigidbody2D.velocity.y + throwSpeed.y);
 
@@ -116,7 +138,8 @@ public class PlayerMovement : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         
-         if(isDead){return;}
+        if(isDead){return;}
+        if(isPaused){return;}
         myAnimator.SetBool("isJumping", false);
 
         if(other.tag == "Enemy")
@@ -127,6 +150,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other) {
         if(isDead){return;}
+        if(isPaused){return;}
         if(other.gameObject.tag == "Hazards" || other.gameObject.tag == "Enemy")
         {
            StartCoroutine(Die());
@@ -141,5 +165,19 @@ public class PlayerMovement : MonoBehaviour
         soundManager.PlayerPlayerDeathSFX();
         yield return new  WaitForSeconds(deathTimer);
         gameManager.reloadScene();
+    }
+
+    public void Pause()
+    {
+        isPaused = true;
+        myRigidbody2D.velocity = Vector2.zero;
+        moveInput = Vector2.zero;
+        myAnimator.SetBool("isRunning", false);
+        myAnimator.SetBool("isJumping", false);
+    }
+
+    public void UnPause()
+    {
+        isPaused = false;
     } 
 }
