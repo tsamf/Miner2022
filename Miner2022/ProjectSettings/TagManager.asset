@@ -51,6 +51,9 @@ TagManager:
   - name: PickAxe
     uniqueID: 3901092087
     locked: 0
+  - name: Hazards
+    uniqueID: 1178489521
+    locked: 0
   - name: Platforms
     uniqueID: 1367392751
     locked: 0
@@ -71,7 +74,4 @@ TagManager:
     locked: 0
   - name: Enemy
     uniqueID: 3675515417
-    locked: 0
-  - name: Hazards
-    uniqueID: 1178489521
     locked: 0

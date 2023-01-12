@@ -6,15 +6,16 @@ public class Blob : MonoBehaviour
 {
     [SerializeField]float movementSpeed = 10f;
     [SerializeField] int points = 100;
-    [SerializeField] AudioClip deathSFX;
 
     private Rigidbody2D myRigidbody2D; 
     private GameManager gameManager;
+    private SoundManager soundManager;
 
     void Awake()
     {
         myRigidbody2D = GetComponent<Rigidbody2D>();
         gameManager = FindObjectOfType<GameManager>();
+        soundManager = FindObjectOfType<SoundManager>();
     }
 
     // Update is called once per frame
@@ -29,7 +30,7 @@ public class Blob : MonoBehaviour
         if(other.tag == "PickAxe")
         {
             gameManager.AddPointsToScore(points);
-            AudioSource.PlayClipAtPoint(deathSFX, Camera.main.transform.position); 
+            soundManager.PlayBlobDeathSFX();
             Destroy(gameObject); 
         }
         else

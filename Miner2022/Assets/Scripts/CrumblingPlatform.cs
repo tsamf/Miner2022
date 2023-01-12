@@ -4,22 +4,20 @@ using UnityEngine;
 
 public class CrumblingPlatform : MonoBehaviour
 {
-
-    [SerializeField] float fallDistance = 10f;
-    [SerializeField] AudioClip crumbleSFX;
     [SerializeField] float crumbleTimer = 1f;
     [SerializeField] float respawnTimer = 2f;
 
     Animator myAnimator;
     SpriteRenderer mySpriteRenderer;
     BoxCollider2D myBoxCollider2D;
+    SoundManager soundManager;
 
-    // Start is called before the first frame update
     void Start()
     {
         myAnimator = GetComponent<Animator>();
         mySpriteRenderer = GetComponent<SpriteRenderer>();
         myBoxCollider2D = GetComponent<BoxCollider2D>();
+        soundManager = FindObjectOfType<SoundManager>();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -34,7 +32,7 @@ public class CrumblingPlatform : MonoBehaviour
     private IEnumerator Crumble()
     {
         myAnimator.SetBool("isCrumbling", true);
-        AudioSource.PlayClipAtPoint(crumbleSFX, Camera.main.transform.position);
+        soundManager.PlayPlatformCrumbleSFX();
         yield return new  WaitForSeconds(crumbleTimer);
         mySpriteRenderer.enabled = false;
         myBoxCollider2D.enabled = false;

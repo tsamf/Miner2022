@@ -5,19 +5,20 @@ using UnityEngine;
 public class Coin : MonoBehaviour
 {
     [SerializeField] int points = 10;
-    [SerializeField] AudioClip collectionSound;
 
     GameManager gameManager;
+    SoundManager soundManager;
 
     private void Awake() {
         gameManager = FindObjectOfType<GameManager>();
+        soundManager = FindObjectOfType<SoundManager>();
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
         if(other.tag == "Player")
         {
             gameManager.AddPointsToScore(points);
-            AudioSource.PlayClipAtPoint(collectionSound, Camera.main.transform.position);
+            soundManager.PlayCoinCollectedSFX();
             Destroy(gameObject);
         }
     }

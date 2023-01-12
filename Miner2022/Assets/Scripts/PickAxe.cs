@@ -4,10 +4,16 @@ using UnityEngine;
 
 public class PickAxe : MonoBehaviour
 {
-    [SerializeField] AudioClip throwSFX;
+
+    private SoundManager soundManager;
+
+    void Awake()
+    {
+        soundManager = FindObjectOfType<SoundManager>();
+    }
 
     void Start()
     {
-        AudioSource.PlayClipAtPoint(throwSFX, Camera.main.transform.position);
+        soundManager.PlayAxeThrowSFX();
     }
 }

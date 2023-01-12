@@ -17,9 +17,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Weapons")]
     [SerializeField] Transform weaponPrefab;
     [SerializeField] Vector2 throwSpeed = new Vector2(2,2);
-    
-    [Header("Sounds")]
-    [SerializeField] AudioClip deathSFX;
+    [SerializeField] float destroyAfterTime = 2f;
     
     private Rigidbody2D myRigidbody2D;
     private Vector2 moveInput;
@@ -27,9 +25,9 @@ public class PlayerMovement : MonoBehaviour
     private CapsuleCollider2D myCapsuleCollider2D; 
     private Animator myAnimator;
     private GameManager gameManager;
+    private SoundManager soundManager;
     private bool isDead;
     private float myGravityScaleAtStart;
-     
 
     private void Awake()
     {
@@ -39,6 +37,7 @@ public class PlayerMovement : MonoBehaviour
         myCapsuleCollider2D = GetComponent<CapsuleCollider2D>();
         myAnimator = GetComponent<Animator>();
         gameManager = FindObjectOfType<GameManager>();
+        soundManager = FindObjectOfType<SoundManager>();
     }
 
     private void Update()
@@ -100,20 +99,23 @@ public class PlayerMovement : MonoBehaviour
         {
             myRigidbody2D.velocity += new Vector2(0, jumpSpeed);
             myAnimator.SetBool("isJumping", true);
+            soundManager.PlayPlayerJumpSFX();
         }
     }
 
     private void OnFire(InputValue value)
     {
-        Debug.Log("I clicked.");
         Transform weapon = Instantiate(weaponPrefab, transform.position, Quaternion.identity);
         Vector2 throwDistance = new Vector2(-transform.localScale.x * (Mathf.Abs(myRigidbody2D.velocity.x)+ throwSpeed.x), myRigidbody2D.velocity.y + throwSpeed.y);
 
         weapon.GetComponent<Rigidbody2D>().velocity = throwDistance;
+
+        Destroy(weapon.gameObject, destroyAfterTime);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        
          if(isDead){return;}
         myAnimator.SetBool("isJumping", false);
 
@@ -136,7 +138,7 @@ public class PlayerMovement : MonoBehaviour
         isDead = true;
         myRigidbody2D.velocity = Vector2.zero;
         myAnimator.SetBool("isDead", true); 
-        AudioSource.PlayClipAtPoint(deathSFX, Camera.main.transform.position);
+        soundManager.PlayerPlayerDeathSFX();
         yield return new  WaitForSeconds(deathTimer);
         gameManager.reloadScene();
     } 
