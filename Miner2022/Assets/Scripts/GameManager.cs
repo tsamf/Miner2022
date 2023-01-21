@@ -5,13 +5,14 @@ using TMPro;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
-{ 
+{
     [SerializeField] TextMeshProUGUI scoreText;
 
     private int score = 0;
 
-    void Awake() {
-        if(FindObjectsOfType<GameManager>().Length >1)
+    void Awake()
+    {
+        if (FindObjectsOfType<GameManager>().Length > 1)
         {
             Destroy(gameObject);
         }
@@ -21,7 +22,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void Start(){
+    void Start()
+    {
         scoreText.text = score.ToString();
     }
 
@@ -34,5 +36,10 @@ public class GameManager : MonoBehaviour
     public void reloadScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void LoadNextScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }
